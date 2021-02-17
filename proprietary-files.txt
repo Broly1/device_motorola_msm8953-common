@@ -138,13 +138,13 @@ vendor/lib64/vendor.qti.hardware.qteeconnector@1.0.so
 # DRM-Widevine - from deen_sprout
 vendor/bin/hw/android.hardware.drm@1.2-service.widevine
 vendor/etc/init/android.hardware.drm@1.2-service.widevine.rc
-vendor/lib/liboemcrypto.so
+#vendor/lib/liboemcrypto.so
 vendor/lib/libhdcpsrm.so
 vendor/lib/libcpion.so
 vendor/lib/mediadrm/libdrmclearkeyplugin.so
 vendor/lib/mediadrm/libwvdrmengine.so
 vendor/lib64/libwvhidl.so
-vendor/lib64/liboemcrypto.so
+#vendor/lib64/liboemcrypto.so
 vendor/lib64/libhdcpsrm.so
 vendor/lib64/libcpion.so
 vendor/lib64/mediadrm/libdrmclearkeyplugin.so
@@ -313,8 +313,8 @@ vendor/bin/lowi-server
 vendor/bin/slim_daemon
 vendor/bin/xtra-daemon
 vendor/etc/init/android.hardware.gnss@2.0-service-qti.rc
-vendor/etc/vintf/manifest/android.hardware.gnss@2.0-service-qti.xml
-vendor/etc/vintf/manifest/vendor.qti.gnss@3.0-service.xml
+-vendor/etc/vintf/manifest/android.hardware.gnss@2.0-service-qti.xml
+-vendor/etc/vintf/manifest/vendor.qti.gnss@3.0-service.xml
 vendor/lib/hw/android.hardware.gnss@2.0-impl-qti.so
 vendor/lib/hw/vendor.qti.gnss@3.0-impl.so
 vendor/lib/libbatching.so
@@ -507,7 +507,6 @@ vendor/lib64/libqmi_csi.so
 vendor/lib64/libqmi_encdec.so
 
 # Radio - from daisy_sprout:10/QKQ1.191002.002/V11.0.11.0.QDLMIXM
-product/framework/qti-telephony-common.jar|11d6b89b31a9bf65218b3676c2bbd296275b1932
 vendor/bin/rmt_storage|4cd57922075ada02799c4ee5fdc2f3eb881d6e52
 
 # Radio - from deen_sprout
@@ -773,7 +772,7 @@ vendor/bin/thermal-engine
 vendor/lib64/libthermalioctl.so
 
 # Time services - from deen_sprout
--vendor/app/TimeService/TimeService.apk;:timeservice_app_cert-legacy-um
+-vendor/app/TimeService/TimeService.apk
 vendor/bin/time_daemon
 vendor/etc/init/init.time_daemon.rc
 -vendor/lib/libtime_genoff.so

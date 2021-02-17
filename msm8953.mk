@@ -24,34 +24,22 @@ $(call inherit-product, vendor/motorola/msm8953-common/msm8953-common-vendor.mk)
 # Common Tree Path
 COMMON_PATH := device/motorola/msm8953-common
 
-# Inherit properties
-$(call inherit-product, $(COMMON_PATH)/common_prop.mk)
-
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(COMMON_PATH)
 
-#ANT+ stack
-PRODUCT_PACKAGES += \
-    AntHalService \
-    libantradio \
-    antradio_app
-
 # Audio
 PRODUCT_PACKAGES += \
-    android.hardware.audio@5.0-impl \
-    android.hardware.audio@2.0-service \
-    android.hardware.audio.effect@5.0-impl \
-    android.hardware.audio.effect@2.0-service \
+    android.hardware.audio@6.0-impl \
+    android.hardware.audio.service \
+    android.hardware.audio.effect@6.0-impl \
     android.hardware.soundtrigger@2.2-impl \
     android.hardware.soundtrigger@2.2-service \
     audiod \
     audio.a2dp.default \
-    audio.primary.msm8953 \
     audio.r_submix.default \
     audio.usb.default \
     libaacwrapper \
     libaudio-resampler \
-    libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
     libvolumelistener \
@@ -78,12 +66,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-service \
     android.hardware.camera.provider@2.4-impl \
-    camera.device@1.0-impl \
     camera.device@3.2-impl \
-    libwui \
-    vendor.qti.hardware.camera.device@1.0 \
-    vendor.qti.hardware.camera.device@1.0_vendor \
-    MotCamera2
+    Camera2 \
+    libwui
 
 # Codec2 modules
 PRODUCT_PACKAGES += \
@@ -94,7 +79,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl \
     android.hardware.graphics.allocator@2.0-service \
-    android.hardware.graphics.composer@2.1-impl \
     android.hardware.graphics.composer@2.1-service \
     android.hardware.graphics.mapper@2.0-impl-2.1 \
     android.hardware.memtrack@1.0-impl \
@@ -114,7 +98,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-service \
     android.hardware.drm@1.0-impl \
-    android.hardware.drm@1.2-service.clearkey
+    android.hardware.drm@1.3-service.clearkey
 
 # Fingerprint
 PRODUCT_PACKAGES += \
@@ -127,23 +111,14 @@ PRODUCT_PACKAGES += \
 
 # FM
 PRODUCT_PACKAGES += \
-    FM2 \
-    libqcomfm_jni \
-    init.qti.fm.sh \
-    qcom.fmradio
-
-PRODUCT_BOOT_JARS += qcom.fmradio
+    FMRadio \
+    libfmjni
 
 PRODUCT_GMS_CLIENTID_BASE := android-motorola
 
 # Fingerprint IDC
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/idc/uinput-fpc.idc:$(TARGET_COPY_OUT_SYSTEM)/usr/idc/uinput-fpc.idc
-
-# Gatekeeper HAL
-PRODUCT_PACKAGES += \
-    android.hardware.gatekeeper@1.0-impl \
-    android.hardware.gatekeeper@1.0-service
 
 # GPS Config
 PRODUCT_COPY_FILES += \
@@ -168,7 +143,11 @@ PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
     android.hidl.base@1.0_system \
     android.hidl.manager@1.0 \
-    android.hidl.manager@1.0_java
+    android.hidl.manager@1.0-java \
+    libhidltransport \
+    libhidltransport.vendor \
+    libhwbinder \
+    libhwbinder.vendor
 
 # IMS
 PRODUCT_PACKAGES += \
@@ -191,7 +170,6 @@ PRODUCT_COPY_FILES += \
 # Init
 PRODUCT_PACKAGES += \
     init.class_main.sh \
-    init.mmi.boot.sh \
     init.mmi.usb.sh \
     init.qcom.early_boot.sh \
     init.qcom.post_boot.sh \
@@ -215,11 +193,6 @@ PRODUCT_PACKAGES += \
     libipanat \
     liboffloadhal
 
-# Keymaster HAL
-PRODUCT_PACKAGES += \
-    android.hardware.keymaster@3.0-impl \
-    android.hardware.keymaster@3.0-service
-
 # Keylayouts
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/keylayout/ft5x06_ts.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/ft5x06_ts.kl \
@@ -231,8 +204,11 @@ PRODUCT_COPY_FILES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-impl \
-    android.hardware.light@2.0-service.motorola_msm8953
+    android.hardware.light@2.0-service.msm8953
+
+# Native Libraries
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/configs/public.libraries.txt:$(TARGET_COPY_OUT_VENDOR)/etc/public.libraries.txt
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -246,13 +222,6 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml
 
-# Netutils
-PRODUCT_PACKAGES += \
-    android.system.net.netd@1.0 \
-    libandroid_net \
-    libandroid_net_32 \
-    netutils-wrapper-1.0
-
 # MotoActions
 PRODUCT_PACKAGES += \
     MotoActions
@@ -260,7 +229,6 @@ PRODUCT_PACKAGES += \
 # OMX
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
-    libextmedia_jni \
     libOmxAacEnc \
     libOmxAmrEnc \
     libOmxCore \
@@ -277,9 +245,7 @@ DEVICE_PACKAGE_OVERLAYS += \
 
 # Power
 PRODUCT_PACKAGES += \
-    power.qcom \
-    android.hardware.power@1.0-impl \
-    android.hardware.power@1.0-service
+    android.hardware.power-service-qti
 
 # Powerhint
 PRODUCT_COPY_FILES += \
@@ -334,10 +300,6 @@ PRODUCT_PACKAGES += \
     librmnetctl \
     libprotobuf-cpp-full
 
-# AOT Preload
-PRODUCT_DEXPREOPT_SPEED_APPS += \
-    SystemUI \
-    NexusLauncherRelease
 
 # Qualcomm
 PRODUCT_COPY_FILES += \
@@ -345,22 +307,14 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/permissions/telephony_product_privapp-permissions-qti.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/telephony_product_privapp-permissions-qti.xml \
     $(COMMON_PATH)/configs/qti_whitelist.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sysconfig/qti_whitelist.xml
 
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    ro.vendor.qti.va_aosp.support=1
-
-PRODUCT_ODM_PROPERTIES += \
-    ro.vendor.qti.va_odm.support=1
+# Protobuf
+PRODUCT_PACKAGES += \
+    libprotobuf-cpp-full-vendorcompat \
+    libprotobuf-cpp-lite-vendorcompat
 
 # QMI
 PRODUCT_PACKAGES += \
     libjson
-
-# RCS
-PRODUCT_PACKAGES += \
-    rcs_service_aidl \
-    rcs_service_aidl.xml \
-    rcs_service_api \
-    rcs_service_api.xml
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
@@ -382,14 +336,18 @@ PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
     $(COMMON_PATH)/seccomp/mediaextractor.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
+# Tethering
+PRODUCT_PACKAGES += \
+    TetheringConfigOverlay
+
 # Sensors
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
-    android.hardware.sensors@1.0-service \
-    libsensorndkbridge
-
+    android.hardware.sensors@1.0-service
 # Shims
 PRODUCT_PACKAGES += \
+    libcutils_shim \
+    libmemset_shim \
     libqsap_shim
 
 # USB HAL
@@ -406,12 +364,6 @@ PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-impl \
     android.hardware.vibrator@1.0-service
 
-# Thermal
-PRODUCT_PACKAGES += \
-    android.hardware.thermal@1.0-impl \
-    android.hardware.thermal@1.0-service \
-    thermal.msm8953
-
 # Wifi
 PRODUCT_PACKAGES += \
     android.hardware.wifi@1.0-service \
@@ -427,6 +379,7 @@ PRODUCT_PACKAGES += \
     wcnss_service \
     wificond \
     wifilogd \
+    WifiOverlay \
     wpa_supplicant \
     wpa_supplicant.conf \
     wpa_supplicant_wcn.conf
@@ -440,3 +393,8 @@ PRODUCT_COPY_FILES += \
 # Wi-Fi Display
 PRODUCT_BOOT_JARS += \
     WfdCommon
+
+# Moto TimeWeather
+PRODUCT_PACKAGES += \
+    TimeWeather
+

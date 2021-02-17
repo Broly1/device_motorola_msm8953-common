@@ -30,7 +30,7 @@ fi
 
 ROOT="$COMMON_DIR"/../../..
 
-HELPER="$ROOT"/vendor/aosp/build/tools/extract_utils.sh
+HELPER="$ROOT"/vendor/lineage/build/tools/extract_utils.sh
 if [ ! -f "$HELPER" ]; then
     echo "Unable to find helper script at $HELPER"
     exit 1
@@ -84,6 +84,11 @@ function blob_fixup() {
         sed -i 's/group system input 9015/group system uhid input 9015/' "${2}"
         ;;
 
+    # memset shim
+    vendor/bin/charge_only_mode)
+        patchelf --add-needed libmemset_shim.so "${2}"
+        ;;
+
     # qsap shim
     vendor/lib64/libmdmcutback.so)
         patchelf --add-needed libqsap_shim.so "${2}"
@@ -91,6 +96,11 @@ function blob_fixup() {
 
     vendor/lib/libmot_gpu_mapper.so)
         sed -i "s/libgui/libwui/" "${2}"
+        ;;
+
+    # Fix missing symbols
+    vendor/lib64/libril-qc-hal-qmi.so)
+        patchelf --add-needed "libcutils_shim.so" "${2}"
         ;;
 
     esac
