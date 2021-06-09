@@ -31,8 +31,10 @@ static inline const char* BtmGetDefaultName()
         return "Moto G(6)";
     if (strstr(product_device, "albus"))
         return "Moto Z2 Play";
+    if (strstr(product_device, "potter"))
+        return "Moto G(5) Plus";
     if (strstr(product_device, "sanders"))
-        return "Moto G(5)S";
+        return "Moto G(5S) Plus";
 
     // Fallback to ro.product.model
     return "Moto MSM8953";

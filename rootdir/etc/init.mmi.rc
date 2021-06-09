@@ -44,6 +44,8 @@ on post-fs
     mkdir /mnt/vendor/persist/wifi 0755 oem_5004 oem_5004
     mkdir /mnt/vendor/persist/bt 0755 oem_5004 bluetooth
     mkdir /persist/public/usc_dm 0775 radio radio
+    mkdir /persist/sds 0700 system system
+    mkdir /mnt/vendor/persist/rfs/msm/mpss/mot_rfs 0771 vendor_rfs system
 
     # This dir is used to store any OMA(both DM and CP) files in persist partition
     # Any app with radio UID or vendor_tcmd GID can read/write/execute files in this dir.
@@ -75,10 +77,14 @@ on post-fs-data
 
     # Setup folders for security
     mkdir /mnt/vendor/persist/security 02770 drmrpc drmrpc
+    mkdir /data/vendor/dbvc 0750 oem_5004 shell
+    chown drmrpc oem_5004 /mnt/vendor/persist/security
 
     # Setup folder for Pre-Activation Kill Switch app (PAKS)
     mkdir /mnt/vendor/persist/paks 02770 oem_5004 oem_5004
 
+    # Create directory used by power_supply_logger
+    mkdir /data/vendor/power_supply_logger 0750 oem_5001 log
     # Create directory power_supply_logger used by memtest and batt_health
     mkdir /data/vendor_de/power_supply_logger 0770 root log
     chown oem_5001 oem_5001 /sys/class/power_supply/battery/cycle_count
@@ -208,6 +214,7 @@ on boot
    chmod 0660 /sys/class/leds/vibrator/seq
    chown system system /sys/class/leds/vibrator/extra
    chmod 0660 /sys/class/leds/vibrator/extra
+   chown root oem_5020 /sys/bus/i2c/devices/2-005a/reduce
 
    # Change ownership of aov related sysfs entries
    chown audio audio /sys/kernel/aov/trigger
@@ -228,7 +235,18 @@ on charger
     trigger early-fs
     trigger fs
     trigger post-fs
-    trigger late-fs
+
+    ## Fold important parts of late-fs into `on charger` to prevent
+    ## starting bootanimation in charge_only_mode
+
+    # Ensure that tracefs has the correct permissions.
+    # This does not work correctly if it is called in post-fs.
+    chmod 0755 /sys/kernel/tracing
+    chmod 0755 /sys/kernel/debug/tracing
+
+    # HALs required before storage encryption can get unlocked (FBE/FDE)
+    class_start early_hal
+
     trigger post-fs-data
     trigger moto-charger
     class_stop main

@@ -29,11 +29,10 @@ PRODUCT_SOONG_NAMESPACES += $(COMMON_PATH)
 
 # Audio
 PRODUCT_PACKAGES += \
-    android.hardware.audio@6.0-impl \
+    android.hardware.audio@4.0-impl \
     android.hardware.audio.service \
-    android.hardware.audio.effect@6.0-impl \
-    android.hardware.soundtrigger@2.2-impl \
-    android.hardware.soundtrigger@2.2-service \
+    android.hardware.audio.effect@4.0-impl \
+    android.hardware.audio.effect@2.0-service \
     audiod \
     audio.a2dp.default \
     audio.r_submix.default \
@@ -245,7 +244,8 @@ DEVICE_PACKAGE_OVERLAYS += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power-service-qti
+    android.hardware.power-service-qti \
+    vendor.qti.hardware.perf@2.0.vendor
 
 # Powerhint
 PRODUCT_COPY_FILES += \
@@ -344,6 +344,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
     android.hardware.sensors@1.0-service
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.sensors.smd=false
+
 # Shims
 PRODUCT_PACKAGES += \
     libcutils_shim \
@@ -363,6 +367,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-impl \
     android.hardware.vibrator@1.0-service
+
+# Thermal
+PRODUCT_PACKAGES += \
+    android.hardware.thermal@1.0-impl \
+    android.hardware.thermal@1.0-service \
+    thermal.msm8953
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -393,8 +403,3 @@ PRODUCT_COPY_FILES += \
 # Wi-Fi Display
 PRODUCT_BOOT_JARS += \
     WfdCommon
-
-# Moto TimeWeather
-PRODUCT_PACKAGES += \
-    TimeWeather
-
